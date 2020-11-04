@@ -1027,6 +1027,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -1047,6 +1049,8 @@ var MemeGenarator = function (_React$Component) {
             randomImage: "http://i.imgflip.com/1bij.jpg",
             allMemeImgs: []
         };
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
@@ -1065,12 +1069,68 @@ var MemeGenarator = function (_React$Component) {
             });
         }
     }, {
+        key: 'handleChange',
+        value: function handleChange(event) {
+            var _event$target = event.target,
+                name = _event$target.name,
+                value = _event$target.value;
+
+            this.setState(_defineProperty({}, name, value));
+
+            console.log("Working!");
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
+            e.preventDefault();
+            var randomNum = Math.floor(Math.random() * this.state.allMemeImgs.length);
+            var randomMeme = this.state.allMemeImgs[randomNum].url;
+            this.setState({ randomImage: randomMeme });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'h2',
+                'div',
                 null,
-                'MemeGenarator'
+                _react2.default.createElement(
+                    'form',
+                    { className: 'meme-form', onSubmit: this.handleSubmit },
+                    _react2.default.createElement('input', {
+                        type: 'text',
+                        name: 'topText',
+                        placeholder: 'Top Text',
+                        value: this.state.topText,
+                        onChange: this.handleChange
+                    }),
+                    _react2.default.createElement('input', {
+                        type: 'text',
+                        name: 'bottomText',
+                        placeholder: 'Bottom Text',
+                        value: this.state.bottomText,
+                        onChange: this.handleChange
+                    }),
+                    _react2.default.createElement(
+                        'button',
+                        null,
+                        'Gen'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'meme' },
+                    _react2.default.createElement('img', { src: this.state.randomImage, alt: '' }),
+                    _react2.default.createElement(
+                        'h2',
+                        { className: 'top' },
+                        this.state.topText
+                    ),
+                    _react2.default.createElement(
+                        'h2',
+                        { className: 'bottom' },
+                        this.state.bottomText
+                    )
+                )
             );
         }
     }]);
